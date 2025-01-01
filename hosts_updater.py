@@ -12,5 +12,7 @@ def main ():
     with open("update_to_host.txt", "r", encoding="utf-8") as file: #esto abre el archivo para que lo leas,
         contenido = file.read()                                     #pero por alguna razón no lo muestra completo
         print(contenido)
+
+        print("Working")
     
 main()
