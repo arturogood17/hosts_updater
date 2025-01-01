@@ -1,4 +1,4 @@
-# hots_updater
+# hosts_updater
 An script to update your hosts file.
 
 This super simple script tries to update your host from a specific web page.
