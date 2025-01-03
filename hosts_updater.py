@@ -2,7 +2,12 @@ import requests
 import shutil
 import os
 
-
+def updating(doc_with_update, doc_to_be_updated):
+    for i in range(len(doc_to_be_updated)):
+        for j in range(len(doc_with_update)):
+            doc_to_be_updated[i] = doc_with_update[j]
+    return doc_to_be_updated
+ 
 def main ():
     url = "https://a.dove.isdumb.one/list.txt"
     with requests.get(url, stream= True) as r: 
@@ -23,15 +28,17 @@ def main ():
         print("Copy failed.")
 
 
-    with open("hosts", "r+") as file: #r+ te permite leer y escribir en un archivo existente
-        beginning = "# These IPs will only block the telemetry check of Adobe apps,"
-        lines = file.readlines() #lee por lineas
-        for i, line in enumerate(lines):
-            if beginning in line.strip():
-                lines[i] = "Hice este cambio\n" #agregrar el \n al final porque si no, pega la línea
+    with open("hosts", "r+") as hosts: #r+ te permite leer y escribir en un archivo existente
+        with open("hosts_updater.py", "r+") as file:
+            lines_hosts = hosts.readlines()
+            beginning = "# These IPs will only block the telemetry check of Adobe apps,"
+            lines_host_updater = file.readlines() #lee por lineas
+            for i, line in enumerate(lines_hosts): #Recorre las líneas de hosts
+                if beginning in line: #si la línea de inicio del txt está, entra en el bucle y
+                    updated = updating(lines_hosts[i:], lines_host_updater) #actualiza la lista lines_hosts
 
-        file.seek(0) # vuelve al inicio del archivo
-        file.writelines(lines) #escribe las líneas de nuevo con los cambios
-        file.truncate() #elimina líneas viejas si el archivo destino es más pequeño
+            hosts.seek(0) #vuelve al inicio del archivo
+            hosts.writelines(updated) #escribe las líneas de nuevo con los cambios que hizo updating
+            hosts.truncate() #elimina líneas viejas si el archivo destino es más pequeño
 
 main()
