@@ -14,7 +14,8 @@ def main ():
     with requests.get(url, stream= True) as r: 
         with open("update_to_hosts.txt", "wb") as file: # cuando haces esto,
             for chunk in r.iter_content(chunk_size= 8192): #se crea el archivo de una vez en la ruta donde tienes el proyecto
-                file.write(chunk)                          #el archivo es grande entonces hay que leerlo en pedacitos de 8 bytes
+                file.write(chunk)                          #si el archivo es grande, entonces hay que leerlo en pedacitos
+                                                           # de 8 bytes
 
     path_hosts_desktop= "" #El hosts debe estar en escritorio
     path_hosts_destino= "" #El path de la carpeta
@@ -23,7 +24,7 @@ def main ():
     if not os.path.isfile(path_hosts_desktop):
         print("Archivo no existe.")
     else:
-        shutil.copy(path_hosts_desktop, path_hosts_destino)
+        shutil.copy(path_hosts_desktop, path_hosts_destino) #copia el archivo hosts de escritorio a la carpeta root del proyecto
 
     if not os.path.isfile(path_hosts_destino):
         print("Copy failed.")
@@ -41,6 +42,6 @@ def main ():
                     updated = updating(lines_host_updater, lines_hosts[i+1:]) #actualiza la lista lines_hosts
 
             hosts.seek(pos) #vuelve al inicio del archivo
-            hosts.truncate(pos)  # Esto limpia el archivo después de la posición
-            hosts.writelines(updated) #escribe las líneas de nuevo con los cambios que hizo updating
+            hosts.truncate(pos)  # Esto limpia el archivo desde la posición hacia adelante
+            hosts.writelines(updated) #escribe las líneas de nuevo con los cambios que hizo la función updating
 main()
