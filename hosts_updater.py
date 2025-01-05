@@ -31,8 +31,8 @@ def main ():
                 file.write(chunk)                          #si el archivo es grande, entonces hay que leerlo en pedacitos
                                                            # de 8 bytes
 
-    path_hosts_desktop= '/mnt/c/Users/artur/OneDrive/Escritorio/hosts' #El hosts debe estar en escritorio
-    path_hosts_destino= "/home/nestapon9/workspace/github.com/arturogood17/hots_updater/hosts" #El path de la carpeta
+    path_hosts_desktop= '' #El hosts debe estar en escritorio
+    path_hosts_destino= "" #El path de la carpeta
                                                                                                #de nuestro proyecto
 
     copy_to_path(path_hosts_desktop, path_hosts_destino)
