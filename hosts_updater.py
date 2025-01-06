@@ -22,6 +22,7 @@ def copy_to_path(path_origen, path_destino):
     else:
         print("Archivo copiado exitosamente.")
 
+
     
 def main ():
     url = "https://a.dove.isdumb.one/list.txt"
