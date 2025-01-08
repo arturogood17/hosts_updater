@@ -23,6 +23,17 @@ def copy_to_path(path_origen, path_destino):
         print("Archivo copiado exitosamente.")
 
 
+def extract_path(file):
+    final_path = []
+    path_abs = os.path.abspath(file)
+    if os.path.exists(path_abs):
+        path_divided = path_abs.split("/")
+        for i in path_divided:
+            if i != file:
+                final_path.append(i)
+        final_path= "/".join(final_path).strip()
+        return final_path
+    raise Exception("El archivo no existe.")
     
 def main ():
     url = "https://a.dove.isdumb.one/list.txt"
@@ -33,8 +44,8 @@ def main ():
                                                            # de 8 bytes
 
     path_hosts_desktop= '' #El hosts debe estar en escritorio
-    path_hosts_destino= "" #El path de la carpeta
-                                                                                               #de nuestro proyecto
+    path_hosts_destino= extract_path("hosts_updater.py") #El path de la carpeta extraido con extract_path
+                                                         #donde se va a copiar el hosts que saquemos de System32
 
     copy_to_path(path_hosts_desktop, path_hosts_destino)
 
