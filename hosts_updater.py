@@ -10,31 +10,27 @@ def updating(doc_with_update, doc_to_be_updated):
     return doc_to_be_updated
 
 def copy_to_path(path_origen, path_destino):
-    if not os.path.isfile(path_origen):
+    if not os.path.isfile(path_origen): #comprueba que el path_origen exista
         print(f"El archivo {path_origen} no existe.")
     try:
-        shutil.copy(path_origen, path_destino) #copia el archivo hosts de escritorio a la carpeta root del proyecto
+        shutil.copy(path_origen, path_destino) #copia el archivo
     except Exception as e: #Te da el error si no se pudo copiar
         print(f"Error inesperado: {e}")
 
-    if not os.path.isfile(path_destino):
-        print(f"Copy failed. No se logró copiar el archivo {path_destino}")
-    else:
-        print("Archivo copiado exitosamente.")
+    print("Archivo copiado exitosamente.")
 
-
-def extract_path(file):
-    final_path = []
-    path_abs = os.path.abspath(file)
+def extract_path(file): #Extrae el path de los archivos
+    final_path = [] 
+    path_abs = os.path.abspath(file) #Obtiene el path del archivo
     if os.path.exists(path_abs):
         path_divided = path_abs.split("/")
         for i in path_divided:
             if i != file:
                 final_path.append(i)
-        final_path= "/".join(final_path).strip()
+        final_path= "/".join(final_path).strip() 
         return final_path
-    raise Exception("El archivo no existe.")
-    
+    raise Exception("El path no existe.")
+
 def main ():
     url = "https://a.dove.isdumb.one/list.txt"
     with requests.get(url, stream= True) as r: 
@@ -43,11 +39,11 @@ def main ():
                 file.write(chunk)                          #si el archivo es grande, entonces hay que leerlo en pedacitos
                                                            # de 8 bytes
 
-    path_hosts_desktop= '' #El hosts debe estar en escritorio
+    path_hosts_windows= '/mnt/c/Windows/System32/drivers/etc/hosts' #Toma el hosts en /System32/drivers/etc/hosts
     path_hosts_destino= extract_path("hosts_updater.py") #El path de la carpeta extraido con extract_path
                                                          #donde se va a copiar el hosts que saquemos de System32
 
-    copy_to_path(path_hosts_desktop, path_hosts_destino)
+    copy_to_path(path_hosts_windows, path_hosts_destino)
 
     with open("hosts", "r+") as hosts: #r+ te permite leer y escribir en un archivo existente
         with open("update_to_hosts.txt", "r+") as file:
@@ -64,6 +60,7 @@ def main ():
             hosts.truncate(pos)  # Esto limpia el archivo desde la posición hacia adelante
             hosts.writelines(updated) #escribe las líneas de nuevo con los cambios que hizo la función updating
     
-    copy_to_path(path_hosts_destino, path_hosts_desktop)
-
+    path_hosts_origen = os.path.abspath("hosts")
+    copy_to_path(path_hosts_origen, path_hosts_windows)
+    
 main()
