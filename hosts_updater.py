@@ -19,7 +19,7 @@ def copy_to_path(path_origen, path_destino):
     except Exception as e: #Te da el error si no se pudo copiar
         print(f"Error inesperado: {e}")
 
-    print("Archivo copiado exitosamente.")
+    print(f"Archivo copiado exitosamente de {path_origen} a {path_destino}.")
 
 def extract_path(file): #Extrae el path de los archivos
     final_path = [] 
@@ -39,7 +39,7 @@ def main ():
         with open("update_to_hosts.txt", "wb") as file: # cuando haces esto,
             for chunk in r.iter_content(chunk_size= 8192): #se crea el archivo de una vez en la ruta donde tienes el proyecto
                 file.write(chunk)                          #si el archivo es grande, entonces hay que leerlo en pedacitos
-                                                           # de 8 bytes
+                                                           # de 8 bytes. Por eso se usa chunk
 
     path_hosts_windows= '/mnt/c/Windows/System32/drivers/etc/hosts' #Toma el hosts en /System32/drivers/etc/hosts
     path_hosts_destino= extract_path("hosts_updater.py") #El path de la carpeta extraido con extract_path
@@ -51,12 +51,12 @@ def main ():
         with open("update_to_hosts.txt", "r+") as file:
             lines_hosts = hosts.readlines() #lee las líneas de hosts
             beginning = "# These IPs will only block the telemetry check of Adobe apps,"
-            lines_host_updater = file.readlines() #lee las líneas de update_to_hosts
+            lines_hosts_updater = file.readlines() #lee las líneas de update_to_hosts
             for i, line in enumerate(lines_hosts): #Recorre las líneas de hosts
                 if beginning in line: #si la línea de inicio del txt está, entra en el bucle y
                     pos = sum(len(line) for line in lines_hosts[:i+1]) #Guarda los bytes desde el inicio hasta esta línea para
                                                                      #luego actualizar
-                    updated = updating(lines_host_updater, lines_hosts[i+1:]) #actualiza la lista lines_hosts
+                    updated = updating(lines_hosts_updater, lines_hosts[i+1:]) #actualiza la lista lines_hosts
 
             hosts.seek(pos) #vuelve al inicio del archivo
             hosts.truncate(pos)  # Esto limpia el archivo desde la posición hacia adelante
@@ -67,10 +67,10 @@ def main ():
 
 if __name__ == "__main__":
     try:
-        if os.geteuid() != 0:
+        if os.geteuid() != 0: #Obtiene el usuario si es 0 es el administrador, si no, es usuario normal
             print("El script requiere con privilegios de administrador.")
-            args= ["sudo", sys.executable] + sys.argv
-            os.execvp("sudo", args)
+            args= ["sudo", sys.executable] + sys.argv #argumentos de la siguiente línea/sys.executable da la ruta del intérprete python
+            os.execvp("sudo", args) #crea un nuevo hilo que corre el programa y mata el anterior
             sys.exit(0)
         else:
             main()
@@ -79,6 +79,4 @@ if __name__ == "__main__":
         sys.exit(1)
     except subprocess.CalledProcessError:
         print("Error al ejecutar el script con privilegios de administrador.")
-        sys.exit(1)
-            
-        
+        sys.exit(1) 
