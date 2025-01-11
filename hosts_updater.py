@@ -1,6 +1,8 @@
 import requests
 import shutil
 import os
+import subprocess
+import sys
 
 def updating(doc_with_update, doc_to_be_updated):
     if  len(doc_with_update) > len(doc_to_be_updated) : #Comprueba que si la lista a act. es más pequeña que la nueva
@@ -62,5 +64,19 @@ def main ():
     
     path_hosts_origen = os.path.abspath("hosts")
     copy_to_path(path_hosts_origen, path_hosts_windows)
-    
-main()
+
+if __name__ == "__main__":
+    try:
+        if os.geteuid() == 0:
+            print("El script requiere con privilegios de administrador.")
+            subprocess.check_call(["sudo", sys.executable] + sys.argv)
+            sys.exit(0)
+        main()
+    except PermissionError:
+        print("No se pudieron obtener los privilegios de admin.")
+        sys.exit(1)
+    except subprocess.CalledProcessError:
+        print("Error al ejecutar el script con privilegios de administrador.")
+        sys.exit(1)
+            
+        
