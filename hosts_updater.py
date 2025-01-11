@@ -67,11 +67,13 @@ def main ():
 
 if __name__ == "__main__":
     try:
-        if os.geteuid() == 0:
+        if os.geteuid() != 0:
             print("El script requiere con privilegios de administrador.")
-            subprocess.check_call(["sudo", sys.executable] + sys.argv)
+            args= ["sudo", sys.executable] + sys.argv
+            os.execvp("sudo", args)
             sys.exit(0)
-        main()
+        else:
+            main()
     except PermissionError:
         print("No se pudieron obtener los privilegios de admin.")
         sys.exit(1)
