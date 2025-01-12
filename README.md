@@ -3,9 +3,9 @@ A script to update your hosts file.
 
 This super simple script tries to update your host from a specific web page.
 It will extract the information from a web page and update your hosts
-from an specific line.
+from a specific line.
 
-1. Run Powershell as administrator:
+1. Run Powershell (try the most recent one) as administrator:
 
 2. Access the path where your script is with something similar to: cd C:\Users\<your user>\<folder where your .py is>
 2. Then run the script with:
