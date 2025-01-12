@@ -31,7 +31,7 @@ def extract_path(file): #Extrae el path de los archivos
                 final_path.append(i)
         final_path= "/".join(final_path).strip() 
         return final_path
-    raise Exception("El path no existe.")
+    raise Exception(f"El path no existe: {path_abs}")
 
 def main ():
     url = "https://a.dove.isdumb.one/list.txt"
