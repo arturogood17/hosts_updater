@@ -79,4 +79,4 @@ if __name__ == "__main__":
         sys.exit(1)
     except subprocess.CalledProcessError:
         print("Error al ejecutar el script con privilegios de administrador.")
-        sys.exit(1) 
+        sys.exit(1)
